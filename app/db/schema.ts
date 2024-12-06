@@ -1,4 +1,5 @@
 import {
+  index,
   integer,
   pgTable,
   serial,
@@ -29,3 +30,19 @@ export const products = pgTable("products", {
   updated_at: timestamp().defaultNow(),
   created_at: timestamp().defaultNow(),
 });
+
+export const warehouses = pgTable(
+  "warehouses",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar({ length: 100 }).notNull(),
+    pincode: varchar({ length: 6 }).notNull(),
+    updated_at: timestamp().defaultNow(),
+    created_at: timestamp().defaultNow(),
+  },
+  (table) => {
+    return {
+      pincodeIndex: index("pincode_index").on(table.pincode),
+    };
+  }
+);
