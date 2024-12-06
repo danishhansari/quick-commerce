@@ -1,6 +1,7 @@
 import { db } from "@/app/db";
 import { products } from "@/app/db/schema";
 import { productSchema } from "@/app/validator/productSchema";
+import { desc } from "drizzle-orm";
 import { unlink } from "node:fs/promises";
 import { writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -55,4 +56,19 @@ export async function POST(request: Request) {
   }
 
   return Response.json({ message: "OK" }, { status: 201 });
+}
+
+export async function GET() {
+  try {
+    const allProduct = await db
+      .select()
+      .from(products)
+      .orderBy(desc(products.created_at));
+    return Response.json(allProduct);
+  } catch (error) {
+    return Response.json(
+      { message: "Error while fetching the details" },
+      { status: 500 }
+    );
+  }
 }
