@@ -1,6 +1,7 @@
 import { db } from "@/app/db";
 import { warehouses } from "@/app/db/schema";
 import { warehouseSchema } from "@/app/validator/warehouseSchema";
+import { desc } from "drizzle-orm";
 
 export async function POST(request: Request) {
   const data = await request.json();
@@ -21,5 +22,16 @@ export async function POST(request: Request) {
       { message: "Failed to store the warehouse" },
       { status: 500 }
     );
+  }
+}
+
+export async function GET(request: Request) {
+  try {
+    const allWarehouses = await db.select().from(warehouses);
+    //   .orderBy(desc(warehouses.created));
+
+    return Response.json(allWarehouses, { status: 200 });
+  } catch (err) {
+    return Response.json({ message: "Internal server error" }, { status: 500 });
   }
 }
