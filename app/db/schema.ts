@@ -55,12 +55,28 @@ export const deliveryPerson = pgTable("delivery_person", {
   id: serial("id").primaryKey(),
   name: varchar({ length: 100 }).notNull(),
   phone: varchar({ length: 13 }).notNull(),
-  warehouseId: integer("warehouse_id").references(() => warehouses.id, {
+  warehouse_id: integer("warehouse_id").references(() => warehouses.id, {
     onDelete: "cascade",
   }),
-  orderId: integer("order_id").references(() => orders.id, {
+  order_id: integer("order_id").references(() => orders.id, {
     onDelete: "set null",
   }),
+  updated_at: timestamp().defaultNow(),
+  created_at: timestamp().defaultNow(),
+});
+
+export const inventories = pgTable("inventories", {
+  id: serial("id").primaryKey(),
+  order_id: integer("order_id").references(() => orders.id, {
+    onDelete: "set null",
+  }),
+  warehouse_id: integer("warehouse_id").references(() => warehouses.id, {
+    onDelete: "cascade",
+  }),
+  product_id: integer("product_id").references(() => products.id, {
+    onDelete: "cascade",
+  }),
+  sku: varchar({ length: 8 }).notNull(),
   updated_at: timestamp().defaultNow(),
   created_at: timestamp().defaultNow(),
 });

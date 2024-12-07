@@ -1,7 +1,6 @@
 import { db } from "@/app/db";
 import { deliveryPerson, warehouses } from "@/app/db/schema";
 import { deliveryPersonSchema } from "@/app/validator/deliveryPersonSchema";
-import { warehouseSchema } from "@/app/validator/warehouseSchema";
 import { desc, eq } from "drizzle-orm";
 
 export async function POST(request: Request) {
@@ -39,7 +38,7 @@ export async function GET() {
         warehouse: warehouses.name,
       })
       .from(deliveryPerson)
-      .leftJoin(warehouses, eq(deliveryPerson.warehouseId, warehouses.id))
+      .leftJoin(warehouses, eq(deliveryPerson.warehouse_id, warehouses.id))
       .orderBy(desc(deliveryPerson.id));
     return Response.json(deliveryAgents, { status: 200 });
   } catch (error) {
