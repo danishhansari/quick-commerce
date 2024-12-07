@@ -1,7 +1,7 @@
 import { db } from "@/app/db";
-import { inventories } from "@/app/db/schema";
+import { inventories, products, warehouses } from "@/app/db/schema";
 import { inventoriesSchema } from "@/app/validator/inventoriesSchema";
-import { desc } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 
 export async function POST(request: Request) {
   const requestData = await request.json();
@@ -35,8 +35,15 @@ export async function POST(request: Request) {
 export async function GET(request: Request) {
   try {
     const allInventories = await db
-      .select()
+      .select({
+        id: inventories.id,
+        sku: inventories.sku,
+        warehouses: warehouses.name,
+        product: products.name,
+      })
       .from(inventories)
+      .leftJoin(warehouses, eq(inventories.warehouse_id, warehouses.id))
+      .leftJoin(products, eq(inventories.product_id, products.id))
       .orderBy(desc(inventories.id));
 
     return Response.json(allInventories, { status: 200 });
