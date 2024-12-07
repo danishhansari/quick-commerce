@@ -3,5 +3,5 @@ import { z } from "zod";
 export const deliveryPersonSchema = z.object({
   name: z.string(),
   phone: z.string().length(13),
-  warehouse_id: z.number(),
+  warehouseId: z.number(),
 });
