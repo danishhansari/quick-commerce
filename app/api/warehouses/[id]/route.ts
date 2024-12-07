@@ -1,5 +1,5 @@
-import { db } from "@/app/db";
-import { warehouses } from "@/app/db/schema";
+import { db } from "@/app/lib/db";
+import { warehouses } from "@/app/lib/db/schema";
 import { eq } from "drizzle-orm";
 
 export async function GET(
