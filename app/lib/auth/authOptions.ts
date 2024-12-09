@@ -46,6 +46,7 @@ export const authOptions: AuthOptions = {
         token.role = user.role;
         token.id = user.id;
       }
+      console.log(token);
       return token;
     },
   },
