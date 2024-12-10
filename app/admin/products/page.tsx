@@ -12,7 +12,6 @@ export default function Products() {
     queryFn: () => getAllProducts(),
   });
 
-  console.log(products);
   return (
     <>
       <div className="flex items-center justify-between">

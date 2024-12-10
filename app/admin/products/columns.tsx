@@ -24,6 +24,7 @@ export const columns: ColumnDef<Product>[] = [
   },
   {
     id: "actions",
+    accessorKey: "actions",
     header: "Actions",
     cell: ({ row }) => {
       <DropdownMenu>
