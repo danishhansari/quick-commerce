@@ -9,6 +9,7 @@ import CreateProductForm, { FormValues } from "./create-product-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createProduct } from "@/app/http/api";
 
+
 const ProductSheet = () => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
@@ -21,7 +22,6 @@ const ProductSheet = () => {
   });
 
   const onSubmit = (values: FormValues) => {
-    console.log(values);
     const formData = new FormData();
     formData.append("name", values.name);
     formData.append("description", values.description);
@@ -30,8 +30,9 @@ const ProductSheet = () => {
 
     mutate(formData);
   };
+
   return (
-    <Sheet open={true}>
+    <Sheet open={false}>
       <SheetContent className="min-w-[28rem] space-y-2">
         <SheetHeader>
           <h1 className="scroll-m-20 text-xl font-bold tracking-tight lg:text-2xl">
