@@ -10,7 +10,7 @@ function makeQueryClient() {
 }
 
 function getQueryClient() {
-  if (typeof window == undefined) {
+  if (typeof window == "undefined") {
     return makeQueryClient();
   } else {
     if (!browserQueryClient) {
