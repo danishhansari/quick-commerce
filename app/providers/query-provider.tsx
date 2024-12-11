@@ -3,6 +3,7 @@
 import { ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RecoilRoot } from "recoil";
+import { Toaster } from "@/components/ui/toaster";
 
 let browserQueryClient: QueryClient | undefined = undefined;
 
@@ -26,6 +27,7 @@ export function QueryProvider({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>{children}</RecoilRoot>
+      <Toaster />
     </QueryClientProvider>
   );
 }

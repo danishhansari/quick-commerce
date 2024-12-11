@@ -10,17 +10,22 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createProduct } from "@/app/http/api";
 import { useRecoilState } from "recoil";
 import { productStore } from "@/store/product-store";
+import { useToast } from "@/hooks/use-toast";
 
 const ProductSheet = () => {
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useRecoilState(productStore);
+  const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["create-product"],
     mutationFn: (data: FormData) => createProduct(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
-      alert("Product created");
+      toast({
+        title: "Product created successfully",
+      });
+      setIsOpen((prev) => !prev);
     },
   });
 
@@ -32,7 +37,6 @@ const ProductSheet = () => {
     formData.append("image", (values.image as FileList)[0]);
 
     mutate(formData);
-    setIsOpen((prev) => !prev);
   };
 
   return (
