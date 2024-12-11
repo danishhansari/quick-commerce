@@ -9,7 +9,7 @@ export async function POST(request: Request) {
   let validatedData;
 
   try {
-    validatedData = await inventoriesSchema.parse(requestData);
+    validatedData = inventoriesSchema.parse(requestData);
     console.log(validatedData);
   } catch (error) {
     console.log(error);
