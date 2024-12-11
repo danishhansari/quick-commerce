@@ -5,7 +5,9 @@ import {
   SheetHeader,
 } from "@/components/ui/sheet";
 import React from "react";
-import CreateProductForm, { FormValues } from "./create-product-form";
+import CreateProductForm, {
+  FormValues,
+} from "../products/_components/create-product-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createProduct } from "@/app/http/api";
 import { useRecoilState } from "recoil";

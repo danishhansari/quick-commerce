@@ -1,25 +1,27 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { DataTable } from "../_components/data-table";
-import { columns } from "./_components/columns";
-import { useQuery } from "@tanstack/react-query";
-import { getAllProducts } from "@/app/http/api";
-import { Product } from "@/types";
-import { useSetRecoilState } from "recoil";
-import { productStore } from "@/store/product-store";
+import React from "react";
 import { Loader2 } from "lucide-react";
+import { DataTable } from "../_components/data-table";
 import ProductSheet from "../_components/product-sheet";
+import { useSetRecoilState } from "recoil";
+import { inventoryStore } from "@/store/inventory-store";
+import { useQuery } from "@tanstack/react-query";
+import { Inventories } from "@/types";
+import { getAllInventories } from "@/app/http/api";
+import { columns } from "./_components/columns";
 
-export default function ProductsPage() {
-  const setIsOpen = useSetRecoilState(productStore);
+const InventoryPage = () => {
+  const setIsOpen = useSetRecoilState(inventoryStore);
+
   const {
-    data: products,
+    data: inventories,
     isError,
     error,
     isLoading,
-  } = useQuery<Product[]>({
-    queryKey: ["products"],
-    queryFn: () => getAllProducts(),
+  } = useQuery<Inventories[]>({
+    queryKey: ["inventories"],
+    queryFn: () => getAllInventories(),
   });
 
   const openMenu = () => {
@@ -29,9 +31,9 @@ export default function ProductsPage() {
   return (
     <>
       <div className="flex items-center justify-between">
-        <h3 className="text-2xl font-bold tracking-tight">Products</h3>
+        <h3 className="text-2xl font-bold tracking-tight">Inventories</h3>
         <Button size={"sm"} onClick={openMenu}>
-          Add Product
+          Add Inventories
         </Button>
         <ProductSheet />
       </div>
@@ -48,8 +50,10 @@ export default function ProductsPage() {
           <Loader2 className="animate-spin text-2xl" />
         </div>
       ) : (
-        <DataTable columns={columns} data={products || []} />
+        <DataTable columns={columns} data={inventories || []} />
       )}
     </>
   );
-}
+};
+
+export default InventoryPage;

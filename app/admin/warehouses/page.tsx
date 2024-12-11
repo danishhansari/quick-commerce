@@ -1,25 +1,27 @@
 "use client";
+import { getAllWarehouses } from "@/app/http/api";
 import { Button } from "@/components/ui/button";
+import { warehousesStore } from "@/store/warehouses-store";
+import { Warehouses } from "@/types";
+import { useQuery } from "@tanstack/react-query";
+import React from "react";
+import { useSetRecoilState } from "recoil";
+import ProductSheet from "../_components/product-sheet";
+import { Loader2 } from "lucide-react";
 import { DataTable } from "../_components/data-table";
 import { columns } from "./_components/columns";
-import { useQuery } from "@tanstack/react-query";
-import { getAllProducts } from "@/app/http/api";
-import { Product } from "@/types";
-import { useSetRecoilState } from "recoil";
-import { productStore } from "@/store/product-store";
-import { Loader2 } from "lucide-react";
-import ProductSheet from "../_components/product-sheet";
 
-export default function ProductsPage() {
-  const setIsOpen = useSetRecoilState(productStore);
+export default function WarehousesPage() {
+  const setIsOpen = useSetRecoilState(warehousesStore);
+
   const {
-    data: products,
+    data: warehouses,
     isError,
     error,
     isLoading,
-  } = useQuery<Product[]>({
-    queryKey: ["products"],
-    queryFn: () => getAllProducts(),
+  } = useQuery<Warehouses[]>({
+    queryKey: ["warehouses"],
+    queryFn: () => getAllWarehouses(),
   });
 
   const openMenu = () => {
@@ -29,9 +31,9 @@ export default function ProductsPage() {
   return (
     <>
       <div className="flex items-center justify-between">
-        <h3 className="text-2xl font-bold tracking-tight">Products</h3>
+        <h3 className="text-2xl font-bold tracking-tight">Warehouse</h3>
         <Button size={"sm"} onClick={openMenu}>
-          Add Product
+          Add Warehouse
         </Button>
         <ProductSheet />
       </div>
@@ -48,7 +50,7 @@ export default function ProductsPage() {
           <Loader2 className="animate-spin text-2xl" />
         </div>
       ) : (
-        <DataTable columns={columns} data={products || []} />
+        <DataTable columns={columns} data={warehouses || []} />
       )}
     </>
   );

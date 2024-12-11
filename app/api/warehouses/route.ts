@@ -1,7 +1,6 @@
 import { db } from "@/app/lib/db";
 import { warehouses } from "@/app/lib/db/schema";
 import { warehouseSchema } from "@/app/lib/validator/warehouseSchema";
-import { desc } from "drizzle-orm";
 
 export async function POST(request: Request) {
   const data = await request.json();
@@ -28,7 +27,6 @@ export async function POST(request: Request) {
 export async function GET(request: Request) {
   try {
     const allWarehouses = await db.select().from(warehouses);
-    //   .orderBy(desc(warehouses.created));
 
     return Response.json(allWarehouses, { status: 200 });
   } catch (err) {
