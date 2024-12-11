@@ -59,14 +59,7 @@ const CreateWarehouse = ({
             <FormItem>
               <FormLabel>Pincode</FormLabel>
               <FormControl>
-                <Input
-                  type="number"
-                  {...field}
-                  onChange={(e) => {
-                    const value = parseFloat(e.target.value);
-                    field.onChange(value);
-                  }}
-                />
+                <Input {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
