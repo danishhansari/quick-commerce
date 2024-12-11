@@ -15,7 +15,7 @@ const ProductSheet = () => {
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useRecoilState(productStore);
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationKey: ["create-product"],
     mutationFn: (data: FormData) => createProduct(data),
     onSuccess: () => {
@@ -36,7 +36,7 @@ const ProductSheet = () => {
   };
 
   return (
-    <Sheet open={isOpen}>
+    <Sheet open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
       <SheetContent className="min-w-[28rem] space-y-2">
         <SheetHeader>
           <h1 className="scroll-m-20 text-xl font-bold tracking-tight lg:text-2xl">
@@ -44,7 +44,7 @@ const ProductSheet = () => {
           </h1>
           <SheetDescription>Create a new product</SheetDescription>
         </SheetHeader>
-        <CreateProductForm onSubmit={onSubmit} />
+        <CreateProductForm onSubmit={onSubmit} disabled={isPending} />
       </SheetContent>
     </Sheet>
   );
