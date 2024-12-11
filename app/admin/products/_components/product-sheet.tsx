@@ -8,10 +8,13 @@ import React from "react";
 import CreateProductForm, { FormValues } from "./create-product-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createProduct } from "@/app/http/api";
-
+import { useRecoilState } from "recoil";
+import { productStore } from "@/store/product-store";
 
 const ProductSheet = () => {
   const queryClient = useQueryClient();
+  const [isOpen, setIsOpen] = useRecoilState(productStore);
+
   const { mutate } = useMutation({
     mutationKey: ["create-product"],
     mutationFn: (data: FormData) => createProduct(data),
@@ -29,10 +32,11 @@ const ProductSheet = () => {
     formData.append("image", (values.image as FileList)[0]);
 
     mutate(formData);
+    setIsOpen((prev) => !prev);
   };
 
   return (
-    <Sheet open={false}>
+    <Sheet open={isOpen}>
       <SheetContent className="min-w-[28rem] space-y-2">
         <SheetHeader>
           <h1 className="scroll-m-20 text-xl font-bold tracking-tight lg:text-2xl">
