@@ -17,3 +17,10 @@ export interface Warehouses {
   name: string;
   pincode: string;
 }
+
+export interface DeliveryPerson {
+  id: number;
+  name: string;
+  phone: string;
+  warehouse: string;
+}

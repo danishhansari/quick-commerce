@@ -1,4 +1,3 @@
-"use client";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -8,11 +7,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Warehouses } from "@/types";
+import { DeliveryPerson } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 
-export const columns: ColumnDef<Warehouses>[] = [
+export const columns: ColumnDef<DeliveryPerson>[] = [
   {
     id: "id",
     accessorKey: "id",
@@ -24,9 +23,14 @@ export const columns: ColumnDef<Warehouses>[] = [
     header: "Name",
   },
   {
-    id: "pincode",
-    accessorKey: "pincode",
-    header: "Pin-code",
+    id: "phone",
+    accessorKey: "phone",
+    header: "Phone",
+  },
+  {
+    id: "warehouse",
+    accessorKey: "warehouse",
+    header: "Warehouse",
   },
   {
     id: "actions",

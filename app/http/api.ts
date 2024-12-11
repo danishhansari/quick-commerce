@@ -24,3 +24,8 @@ export const getAllWarehouses = async () => {
   console.log(response.data);
   return response.data;
 };
+
+export const getAllDeliveryPerson = async () => {
+  const response = await api.get("/delivery-person");
+  return response.data;
+};
