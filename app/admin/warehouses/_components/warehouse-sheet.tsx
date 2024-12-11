@@ -7,7 +7,7 @@ import {
 import React from "react";
 import CreateWarehouse, { FormValues } from "./create-warehouse-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createProduct } from "@/app/http/api";
+import { createWarehouse } from "@/app/http/api";
 import { useRecoilState } from "recoil";
 import { useToast } from "@/hooks/use-toast";
 import { warehousesStore } from "@/store/warehouses-store";
@@ -19,11 +19,11 @@ const WarehouseSheet = () => {
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["create-warehouse"],
-    mutationFn: (data: FormData) => createProduct(data),
+    mutationFn: (data: any) => createWarehouse(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["warehouses"] });
       toast({
-        title: "Product created successfully",
+        title: "Warehouse created successfully",
       });
       setIsOpen((prev) => !prev);
     },

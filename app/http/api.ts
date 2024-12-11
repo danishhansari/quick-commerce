@@ -1,3 +1,4 @@
+import { Warehouses } from "@/types";
 import { api } from "./client";
 
 export const getAllProducts = async () => {
@@ -15,7 +16,12 @@ export const createProduct = async (data: FormData) => {
 };
 
 export const getAllInventories = async () => {
-  const response = await api.get("inventories");
+  const response = await api.get("/inventories");
+  return response.data;
+};
+
+export const createWarehouse = async (data: Warehouses) => {
+  const response = await api.post("/warehouses", data);
   return response.data;
 };
 
