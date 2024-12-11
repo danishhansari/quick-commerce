@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import { Loader2 } from "lucide-react";
 import { DataTable } from "../_components/data-table";
-import ProductSheet from "../_components/product-sheet";
+import ProductSheet from "../products/_components/product-sheet";
 import { useSetRecoilState } from "recoil";
 import { inventoryStore } from "@/store/inventory-store";
 import { useQuery } from "@tanstack/react-query";

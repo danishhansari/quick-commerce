@@ -8,7 +8,7 @@ import { useSetRecoilState } from "recoil";
 import { DataTable } from "../_components/data-table";
 import { columns } from "./_components/columns";
 import { Loader2 } from "lucide-react";
-import ProductSheet from "../_components/product-sheet";
+import ProductSheet from "../products/_components/product-sheet";
 import { Button } from "@/components/ui/button";
 
 export default function DeliveryPersonPage() {

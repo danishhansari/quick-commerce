@@ -6,7 +6,7 @@ import { Warehouses } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { useSetRecoilState } from "recoil";
-import ProductSheet from "../_components/product-sheet";
+import ProductSheet from "../products/_components/product-sheet";
 import { Loader2 } from "lucide-react";
 import { DataTable } from "../_components/data-table";
 import { columns } from "./_components/columns";

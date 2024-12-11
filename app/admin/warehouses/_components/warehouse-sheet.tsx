@@ -5,25 +5,23 @@ import {
   SheetHeader,
 } from "@/components/ui/sheet";
 import React from "react";
-import CreateProductForm, {
-  FormValues,
-} from "../products/_components/create-product-form";
+import CreateWarehouse, { FormValues } from "./create-warehouse-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createProduct } from "@/app/http/api";
 import { useRecoilState } from "recoil";
-import { productStore } from "@/store/product-store";
 import { useToast } from "@/hooks/use-toast";
+import { warehousesStore } from "@/store/warehouses-store";
 
-const ProductSheet = () => {
+const WarehouseSheet = () => {
   const queryClient = useQueryClient();
-  const [isOpen, setIsOpen] = useRecoilState(productStore);
+  const [isOpen, setIsOpen] = useRecoilState(warehousesStore);
   const { toast } = useToast();
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ["create-product"],
+    mutationKey: ["create-warehouse"],
     mutationFn: (data: FormData) => createProduct(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["warehouses"] });
       toast({
         title: "Product created successfully",
       });
@@ -32,13 +30,8 @@ const ProductSheet = () => {
   });
 
   const onSubmit = (values: FormValues) => {
-    const formData = new FormData();
-    formData.append("name", values.name);
-    formData.append("description", values.description);
-    formData.append("price", String(values.price));
-    formData.append("image", (values.image as FileList)[0]);
-
-    mutate(formData);
+    // mutate(values);
+    console.log(values);
   };
 
   return (
@@ -50,10 +43,10 @@ const ProductSheet = () => {
           </h1>
           <SheetDescription>Create a new product</SheetDescription>
         </SheetHeader>
-        <CreateProductForm onSubmit={onSubmit} disabled={isPending} />
+        <CreateWarehouse onSubmit={onSubmit} disabled={isPending} />
       </SheetContent>
     </Sheet>
   );
 };
 
-export default ProductSheet;
+export default WarehouseSheet;

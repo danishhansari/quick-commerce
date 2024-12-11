@@ -8,7 +8,7 @@ import { Product } from "@/types";
 import { useSetRecoilState } from "recoil";
 import { productStore } from "@/store/product-store";
 import { Loader2 } from "lucide-react";
-import ProductSheet from "../_components/product-sheet";
+import ProductSheet from "./_components/product-sheet";
 
 export default function ProductsPage() {
   const setIsOpen = useSetRecoilState(productStore);
