@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
+import ProductSection from "@/components/product-sections";
 
 export default function Home() {
-  return <Button>Hi there</Button>;
+  return <ProductSection />;
 }
