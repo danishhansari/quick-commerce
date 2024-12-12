@@ -8,8 +8,8 @@ import { useSetRecoilState } from "recoil";
 import { DataTable } from "../_components/data-table";
 import { columns } from "./_components/columns";
 import { Loader2 } from "lucide-react";
-import ProductSheet from "../products/_components/product-sheet";
 import { Button } from "@/components/ui/button";
+import DeliveryPersonSheet from "./_components/delivery-person-sheet";
 
 export default function DeliveryPersonPage() {
   const setIsOpen = useSetRecoilState(deliveryPersonStore);
@@ -20,7 +20,7 @@ export default function DeliveryPersonPage() {
     error,
     isLoading,
   } = useQuery<DeliveryPerson[]>({
-    queryKey: ["inventories"],
+    queryKey: ["delivery-person"],
     queryFn: () => getAllDeliveryPerson(),
   });
 
@@ -35,7 +35,7 @@ export default function DeliveryPersonPage() {
         <Button size={"sm"} onClick={openMenu}>
           Add Delivery Partner
         </Button>
-        <ProductSheet />
+        <DeliveryPersonSheet />
       </div>
 
       {isError && (

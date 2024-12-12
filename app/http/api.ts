@@ -1,4 +1,4 @@
-import { DeliveryPerson, Warehouses } from "@/types";
+import { DeliveryPerson, Product, Warehouses } from "@/types";
 import { api } from "./client";
 
 export const getAllProducts = async () => {
@@ -6,12 +6,17 @@ export const getAllProducts = async () => {
   return response.data;
 };
 
-export const createProduct = async (data: DeliveryPerson) => {
+export const createProduct = async (data: Product) => {
   const response = await api.post("/products", data, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
+  return response.data;
+};
+
+export const createDeliveryPerson = async (data: DeliveryPerson) => {
+  const response = await api.post("/delivery-person", data);
   return response.data;
 };
 
