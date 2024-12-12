@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Inter as FontSans } from "next/font/google";
+import { Inter } from "next/font/google";
 import { QueryProvider } from "./providers/query-provider";
 
-const fontSans = FontSans({
+const fontSans = Inter({
   subsets: ["latin"],
-  variable: "--font-sans",
+  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${fontSans.variable} antialiased`}>
+      <body className={`${fontSans.className} antialiased`}>
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
