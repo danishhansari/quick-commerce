@@ -23,6 +23,10 @@ export const columns: ColumnDef<Inventories>[] = [
     header: "Warehouse",
   },
   {
+    accessorKey: "product",
+    header: "Product",
+  },
+  {
     id: "actions",
     accessorKey: "actions",
     header: "Actions",

@@ -3,13 +3,13 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import { Loader2 } from "lucide-react";
 import { DataTable } from "../_components/data-table";
-import ProductSheet from "../products/_components/product-sheet";
 import { useSetRecoilState } from "recoil";
 import { inventoryStore } from "@/store/inventory-store";
 import { useQuery } from "@tanstack/react-query";
 import { Inventories } from "@/types";
 import { getAllInventories } from "@/app/http/api";
 import { columns } from "./_components/columns";
+import InventoriesSheet from "./_components/inventories-sheet";
 
 export default function InventoryPage() {
   const setIsOpen = useSetRecoilState(inventoryStore);
@@ -35,7 +35,7 @@ export default function InventoryPage() {
         <Button size={"sm"} onClick={openMenu}>
           Add Inventories
         </Button>
-        <ProductSheet />
+        <InventoriesSheet />
       </div>
 
       {isError && (
