@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import { Button } from "@/components/ui/button";
 import { DataTable } from "../_components/data-table";
 import { columns } from "./_components/columns";
