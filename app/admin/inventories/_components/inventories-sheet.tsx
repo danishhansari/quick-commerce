@@ -35,7 +35,7 @@ const InventoriesSheet = () => {
 
   return (
     <Sheet open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
-      <SheetContent className="min-w-[28rem] space-y-2">
+      <SheetContent className="min-w-[20rem] space-y-2">
         <SheetHeader>
           <h1 className="scroll-m-20 text-xl font-bold tracking-tight lg:text-2xl">
             Create Delivery Person
