@@ -9,7 +9,7 @@ import {
   Layers,
   Warehouse,
 } from "lucide-react";
-
+import "../globals.css";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
