@@ -3,7 +3,6 @@ import "./globals.css";
 import Link from "next/link";
 import {
   DropdownMenu,
-  DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
@@ -11,6 +10,11 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 
 export default function Home() {
+  const links = [
+    { href: "#", text: "Home" },
+    { href: "#", text: "About" },
+    { href: "#", text: "Services" },
+  ];
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b bg-white dark:border-gray-800 dark:bg-gray-950">
@@ -20,42 +24,27 @@ export default function Home() {
             <span className="sr-only">Quick commerce</span>
           </Link>
           <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
-
-            <Link
-              href="#"
-              className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-              prefetch={false}
-            >
-              Home
-            </Link>
-            <Link
-              href="#"
-              className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-              prefetch={false}
-            >
-              About
-            </Link>
-            <Link
-              href="#"
-              className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-              prefetch={false}
-            >
-              Services
-            </Link>
-          
+            {links.map((link, index) => (
+              <Link
+                key={index}
+                href={link.href}
+                className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+                prefetch={false}
+              >
+                {link.text}
+              </Link>
+            ))}
           </nav>
 
-          <div className="flex items-center gap-4">
-           <DropdownMenu>
+          <div className="flex items-center gap-2">
+            <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="rounded-lg">
-                <Link href={"/admin"}>
-                  Admin Login
-                </Link>
+                  <Link href={"/admin"}>Admin Login</Link>
                 </Button>
               </DropdownMenuTrigger>
             </DropdownMenu>
-                <Sheet>
+            <Sheet>
               <SheetTrigger asChild>
                 <Button
                   variant="ghost"
@@ -67,29 +56,17 @@ export default function Home() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="md:hidden">
-                <div className="grid gap-4 p-4">
-                  <Link
-                    href="#"
-                    className="text-sm font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-                    prefetch={false}
-                  >
-                    Home
-                  </Link>
-                  <Link
-                    href="#"
-                    className="text-sm font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-                    prefetch={false}
-                  >
-                    About
-                  </Link>
-                  <Link
-                    href="#"
-                    className="text-sm font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-                    prefetch={false}
-                  >
-                    Services
-                  </Link>
-                
+                <div className="grid gap-4 p-4 mt-16">
+                  {links.map((link, index) => (
+                    <Link
+                      key={index}
+                      href={link.href}
+                      className="text-sm font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+                      prefetch={false}
+                    >
+                      {link.text}
+                    </Link>
+                  ))}
                 </div>
               </SheetContent>
             </Sheet>
@@ -99,7 +76,6 @@ export default function Home() {
     </>
   );
 }
-
 
 function MountainIcon(props: any) {
   return (
