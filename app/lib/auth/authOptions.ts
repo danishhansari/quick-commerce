@@ -4,6 +4,9 @@ import { users } from "../db/schema";
 import { AuthOptions } from "next-auth";
 
 export const authOptions: AuthOptions = {
+  pages: {
+    signIn: "/auth/signin"
+  },
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -40,6 +43,9 @@ export const authOptions: AuthOptions = {
   callbacks: {
     session(data: any) {
       return data;
+    },
+    async redirect({baseUrl }) {
+      return baseUrl;
     },
     jwt({ token, user }: { token: any; user: any }) {
       if (user) {

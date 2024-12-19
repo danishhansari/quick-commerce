@@ -1,5 +1,4 @@
-import ProductSection from "@/components/product-sections";
-import "./globals.css";
+'use client'
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -8,12 +7,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
+import { MountainIcon } from "@/components/mountain-icon";
 
 export default function Home() {
   const links = [
     { href: "#", text: "Home" },
-    { href: "#", text: "About" },
-    { href: "#", text: "Services" },
+    { href: "/about", text: "About" },
+    { href: "/services", text: "Services" },
   ];
   return (
     <>
@@ -40,7 +40,7 @@ export default function Home() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="rounded-lg">
-                  <Link href={"/admin"}>Admin Login</Link>
+                  <Link href={"/admin"}>Admin</Link>
                 </Button>
               </DropdownMenuTrigger>
             </DropdownMenu>
@@ -74,24 +74,5 @@ export default function Home() {
         </div>
       </header>
     </>
-  );
-}
-
-function MountainIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
-    </svg>
   );
 }
