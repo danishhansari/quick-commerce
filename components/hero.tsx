@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { ShoppingCart, Sparkles,  Package, Clock } from 'lucide-react'
-import { FeatureCard } from "./feature"
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ShoppingCart, Sparkles, Package, Clock, ShieldCheck } from "lucide-react";
+import { FeatureCard } from "./feature";
 
 export function HeroSection() {
   return (
@@ -28,27 +28,34 @@ export function HeroSection() {
                 <ShoppingCart className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
                 Start Shopping
               </Button>
-              
             </div>
 
-            {/* Feature Cards */}
-            <div className="grid grid-cols-2 gap-2 md:gap-4 max-w-sm">
-              <FeatureCard
-                icon={Package}
-                title="50k+ Products"
-                description="Curated selection"
-              />
-              <FeatureCard
-                icon={Clock}
-                title="24/7 Delivery"
-                description="Always available"
-              />
-            </div>
+            <div className="flex md:grid md:grid-cols-3 gap-4 mt-4 overflow-x-auto w-full scrollbar-hide pb-4 md:overflow-visible">
+      <FeatureCard
+        icon={Package}
+        title="50k+ Products"
+        description="Curated selection"
+        gradientFrom="rgba(119, 70, 129, 0.1)"
+        gradientTo="rgba(124, 58, 137, 0.2)"
+      />
+      <FeatureCard
+        icon={Clock}
+        title="24/7 Delivery"
+        description="Always available"
+        gradientFrom="rgba(16, 185, 129, 0.1)"
+        gradientTo="rgba(5, 150, 105, 0.2)"
+      />
+      <FeatureCard
+        icon={ShieldCheck}
+        title="Secure Payments"
+        description="100% protected"
+        gradientFrom="rgba(145, 154, 11, 0.1)"
+        gradientTo="rgba(117, 119, 6, 0.2)"
+      />
+    </div>
           </div>
-
         </div>
       </div>
     </section>
-  )
+  );
 }
-
