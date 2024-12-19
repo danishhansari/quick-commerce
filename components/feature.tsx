@@ -10,15 +10,13 @@ interface FeatureCardProps {
 
 export function FeatureCard({ icon: Icon, title, description }: FeatureCardProps) {
   return (
-    <Card className="hover:shadow-lg transition-shadow">
-      <CardHeader>
-        <Icon className="h-8 w-8 text-primary" />
-      </CardHeader>
-      <CardContent>
+    <div className="hover:shadow-lg transition-shadow border max-w-md w-full text-center py-2  md:py-4 rounded-md">  
+        <Icon className="mx-auto block h-4 w-4 md:h-6 md:h-6 text-primary mb-2" />
+      <div className=''>
         <h3 className="font-semibold">{title}</h3>
-        <p className="text-sm text-muted-foreground">{description}</p>
-      </CardContent>
-    </Card>
+        <p className="text-xs text-muted-foreground">{description}</p>
+      </div>
+    </div>
   )
 }
 
