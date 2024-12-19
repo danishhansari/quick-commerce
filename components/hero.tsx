@@ -30,7 +30,9 @@ export function HeroSection() {
               </Button>
             </div>
 
-            <div className="flex md:grid md:grid-cols-3 gap-4 mt-4 overflow-x-auto w-full scrollbar-hide pb-4 md:overflow-visible">
+          </div>
+        </div>
+            <div className="flex md:grid md:grid-cols-3 gap-4 mt-12 overflow-x-auto md:w-1/2 scrollbar-hide pb-4 md:overflow-visible">
       <FeatureCard
         icon={Package}
         title="50k+ Products"
@@ -53,8 +55,6 @@ export function HeroSection() {
         gradientTo="rgba(117, 119, 6, 0.2)"
       />
     </div>
-          </div>
-        </div>
       </div>
     </section>
   );
