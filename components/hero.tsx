@@ -32,27 +32,27 @@ export function HeroSection() {
 
           </div>
         </div>
-            <div className="flex md:grid md:grid-cols-3 gap-4 mt-12 overflow-x-auto md:w-1/2 scrollbar-hide pb-4 md:overflow-visible">
+        <div className="flex md:grid md:grid-cols-3 gap-4 mt-12 overflow-x-auto w-full md:w-1/2 scrollbar-hide pb-4 md:overflow-visible">
       <FeatureCard
         icon={Package}
         title="50k+ Products"
         description="Curated selection"
-        gradientFrom="rgba(119, 70, 129, 0.1)"
-        gradientTo="rgba(124, 58, 137, 0.2)"
+        gradientFrom="rgba(0, 0, 0, 0.02)"
+        gradientTo="rgba(0, 0, 0, 0.06)"
       />
       <FeatureCard
         icon={Clock}
         title="24/7 Delivery"
         description="Always available"
-        gradientFrom="rgba(16, 185, 129, 0.1)"
-        gradientTo="rgba(5, 150, 105, 0.2)"
+        gradientFrom="rgba(0, 0, 0, 0.02)"
+        gradientTo="rgba(0, 0, 0, 0.06)"
       />
       <FeatureCard
         icon={ShieldCheck}
         title="Secure Payments"
         description="100% protected"
-        gradientFrom="rgba(145, 154, 11, 0.1)"
-        gradientTo="rgba(117, 119, 6, 0.2)"
+        gradientFrom="rgba(0, 0, 0, 0.02)"
+        gradientTo="rgba(0, 0, 0, 0.06)"
       />
     </div>
       </div>
