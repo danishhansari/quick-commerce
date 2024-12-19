@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 const ProductSection = () => {
   const { data: products } = useQuery<Product[]>({
     queryKey: ["products"],
-    queryFn: getAllProducts,
+    queryFn: () => getAllProducts(),
     staleTime: 10 * 1000,
   });
 
@@ -16,14 +16,15 @@ const ProductSection = () => {
         Products
       </h2>
 
-      {products?.map((product) => {
-        return (
-          <>
-            <img src={product.image} />
-            <h1>{product.id}</h1>
-          </>
-        );
-      })}
+      {products?.length &&
+        products.map((item) => {
+          return (
+            <>
+              <h1 className="text-2xl ">{item.id}</h1>;
+              <img src={item.image} alt={item.name} />
+            </>
+          );
+        })}
     </>
   );
 };
