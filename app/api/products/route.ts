@@ -2,7 +2,7 @@ import { db } from "@/app/lib/db";
 import { products } from "@/app/lib/db/schema";
 import { productSchema } from "@/app/lib/validator/productSchema";
 import { desc } from "drizzle-orm";
-import { utapi } from "../uploadthing/uploadthing";
+import { utapi } from "../../lib/uploadthing/uploadthing";
 
 export async function POST(request: Request) {
   const data = await request.formData();
