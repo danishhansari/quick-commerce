@@ -12,6 +12,22 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { orderSchema } from "@/app/lib/validator/orderSchema";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+
+export type FormValues = z.input<typeof orderSchema>;
 
 const ProductPage = () => {
   const params = useParams();
@@ -28,9 +44,21 @@ const ProductPage = () => {
     queryFn: () => getProductById(productId),
   });
 
-  if (isError) {
-    return (
-      <div className="container mx-auto px-4 py-8">
+  const form = useForm<z.infer<typeof orderSchema>>({
+    resolver: zodResolver(orderSchema),
+    defaultValues: {
+      address: "",
+      pincode: "",
+      qty: 1,
+      productId: Number(productId),
+    },
+  });
+
+  const onSubmit = (values: FormValues) => {};
+
+  return (
+    <div className="container mx-auto px-4 py-4 md:py-8 md:px-20">
+      {isError && (
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
@@ -38,12 +66,8 @@ const ProductPage = () => {
             Failed to load product: {error.message}
           </AlertDescription>
         </Alert>
-      </div>
-    );
-  }
+      )}
 
-  return (
-    <div className="container mx-auto px-4 py-4 md:py-8 md:px-20">
       {isLoading ? (
         <div className="grid gap-8 md:grid-cols-2">
           <Skeleton className="aspect-square w-full rounded-xl" />
@@ -87,8 +111,55 @@ const ProductPage = () => {
               <h2 className="text-sm font-medium">Description</h2>
               <p className="mt-2 text-gray-600">{product.name}</p>
             </div>
+
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <FormField
+                  control={form.control}
+                  name="address"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Address</FormLabel>
+                      <FormControl>
+                        <Textarea placeholder="Address..." {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="flex flex-col md:flex-row gap-4 mt-4">
+                  <FormField
+                    control={form.control}
+                    name="pincode"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Pincode</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Pincode..." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="qty"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Quantity</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Pincode..." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </form>
+            </Form>
+
             {session ? (
-              <Button size="lg" className="group">
+              <Button size="lg" className="group w-full">
                 <ShoppingCart className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
                 Buy Now
               </Button>
