@@ -49,6 +49,23 @@ export const warehouses = pgTable(
 
 export const orders = pgTable("orders", {
   id: serial("id").primaryKey(),
+  user_id: integer("user_id")
+    .references(() => users.id, {
+      onDelete: "cascade",
+    })
+    .notNull(),
+  product_id: integer("product_id")
+    .references(() => products.id, {
+      onDelete: "no action",
+    })
+    .notNull(),
+  status: varchar({ length: 10 }).notNull(),
+  type: varchar({ length: 6 }).default("quick"),
+  price: integer().notNull(),
+  address: text().notNull(),
+  qty: integer().notNull(),
+  updated_at: timestamp().defaultNow(),
+  created_at: timestamp().defaultNow(),
 });
 
 export const deliveryPerson = pgTable("delivery_person", {

@@ -8,5 +8,5 @@ export const orderSchema = z.object({
   pincode: z
     .string({ message: "Pin code should be a string" })
     .length(6, "Pincode should be 6 character long"),
-  qty: z.number({ message: "Quantity should be a number" }),
+  qty: z.number({ message: "Quantity should be a number" }).positive(),
 });

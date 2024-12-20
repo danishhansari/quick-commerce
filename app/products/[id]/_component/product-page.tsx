@@ -26,6 +26,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import { useMemo } from "react";
 
 export type FormValues = z.input<typeof orderSchema>;
 
@@ -55,6 +56,15 @@ const ProductPage = () => {
   });
 
   const onSubmit = (values: FormValues) => {};
+
+  const qty = form.watch("qty");
+
+  const price = useMemo(() => {
+    if (product?.price) {
+      return product.price * qty;
+    }
+    return 0;
+  }, [qty, product]);
 
   return (
     <div className="container mx-auto px-4 py-4 md:py-8 md:px-20">
@@ -148,7 +158,16 @@ const ProductPage = () => {
                       <FormItem>
                         <FormLabel>Quantity</FormLabel>
                         <FormControl>
-                          <Input placeholder="Pincode..." {...field} />
+                          <Input
+                            type="number"
+                            className="h-9 border-brown-200 bg-white placeholder:text-gray-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brown-400 focus-visible:ring-offset-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                            placeholder="e.g. 1"
+                            {...field}
+                            onChange={(e) => {
+                              const value = parseFloat(e.target.value);
+                              field.onChange(value <= 0 ? 1 : value);
+                            }}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -161,13 +180,13 @@ const ProductPage = () => {
             {session ? (
               <Button size="lg" className="group w-full">
                 <ShoppingCart className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
-                Buy Now
+                ${price} Buy Now
               </Button>
             ) : (
-              <Link href={`/api/auth/signin?callbackUrl=/${pathName}`}>
+              <Link href={`/api/auth/signin?callbackUrl=${pathName}`}>
                 <Button size="lg" className="group">
                   <ShoppingCart className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
-                  Buy Now
+                  ${price} Buy Now
                 </Button>
               </Link>
             )}
