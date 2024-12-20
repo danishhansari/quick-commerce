@@ -152,7 +152,7 @@ const CreateInventoriesPage = ({
 
         <Button type="submit" className="w-full">
           {disabled ? (
-            <Loader2 className="animate-spring" />
+            <Loader2 className="animate-spin" />
           ) : (
             "Create Invetories"
           )}
