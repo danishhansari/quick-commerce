@@ -3,6 +3,7 @@ import "./globals.css";
 
 import { Inter } from "next/font/google";
 import { QueryProvider } from "./providers/query-provider";
+import Navbar from "@/components/navbar";
 
 const fontSans = Inter({
   subsets: ["latin"],
@@ -22,7 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${fontSans.className} antialiased`}>
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          <Navbar />
+          {children}
+        </QueryProvider>
       </body>
     </html>
   );

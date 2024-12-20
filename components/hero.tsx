@@ -11,7 +11,7 @@ import { FeatureCard } from "./feature";
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-screen bg-gradient-to-br via-background to-secondary/5 overflow-hidden">
+    <section className="relative md:min-h-screen bg-gradient-to-br via-background to-secondary/5 overflow-hidden">
       <div className="container mx-auto px-4 md:px-20 py-12 relative md:mt-12  ">
         <div className="grid lg:grid-cols-2 gap-4 md:gap-12 items-center">
           <div className="space-y-4 md:space-y-6">

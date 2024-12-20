@@ -2,9 +2,11 @@
 import { getAllProducts } from "@/app/http/api";
 import { Product } from "@/types";
 import { useQuery } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
+import Link from "next/link";
 
 const ProductSection = () => {
-  const { data: products } = useQuery<Product[]>({
+  const { data: products, isLoading } = useQuery<Product[]>({
     queryKey: ["products"],
     queryFn: () => getAllProducts(),
     staleTime: 10 * 1000,
@@ -16,13 +18,19 @@ const ProductSection = () => {
         Products
       </h2>
 
+      {isLoading && (
+        <div className="flex items-center justify-center w-full">
+          <Loader2 className="animate-spin" />
+        </div>
+      )}
+
       {products?.length &&
         products.map((item) => {
           return (
-            <>
+            <Link href={`/products/${item.id}`}>
               <h1 className="text-2xl ">{item.id}</h1>;
               <img src={item.image} alt={item.name} />
-            </>
+            </Link>
           );
         })}
     </>

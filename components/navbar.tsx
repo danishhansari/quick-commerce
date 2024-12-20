@@ -8,8 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { MountainIcon } from "@/components/mountain-icon";
+import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
+  const { data } = useSession();
+  const pathName = usePathname();
   const links = [
     { href: "#", text: "Home" },
     { href: "/about", text: "About" },
@@ -18,7 +22,7 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white dark:border-gray-800 dark:bg-gray-950">
       <div className="container mx-auto flex h-16 max-w-6xl items-center justify-between px-4 md:px-6">
-        <Link href="#" className="flex items-center gap-2" prefetch={false}>
+        <Link href="/" className="flex items-center gap-2" prefetch={false}>
           <MountainIcon className="h-6 w-6" />
           <span className="sr-only">Quick commerce</span>
         </Link>
@@ -39,7 +43,13 @@ const Navbar = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" className="rounded-lg">
-                <Link href={"/admin"}>Admin</Link>
+                {data ? (
+                  <Link href={"/admin"}>Admin</Link>
+                ) : (
+                  <Link href={`/api/auth/signin?callbackUrl=${pathName}/admin`}>
+                    Admin
+                  </Link>
+                )}
               </Button>
             </DropdownMenuTrigger>
           </DropdownMenu>
