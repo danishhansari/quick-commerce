@@ -1,16 +1,14 @@
-import type { Metadata } from "next";
 import "./globals.css";
 
 import { Inter } from "next/font/google";
 import { QueryProvider } from "./providers/query-provider";
-import { SessionProvider } from "next-auth/react";
 
 const fontSans = Inter({
   subsets: ["latin"],
   weight: ["400", "700"],
 });
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Quick Commerce",
   description: "Building the quick commerce",
 };

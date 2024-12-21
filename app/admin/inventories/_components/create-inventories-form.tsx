@@ -45,13 +45,14 @@ const CreateInventoriesPage = ({
     Warehouses[]
   >({
     queryKey: ["warehouses"],
-    queryFn: () => getAllWarehouses(),
+    queryFn: getAllWarehouses,
   });
 
   const { data: products, isLoading: isProductsLoading } = useQuery<Product[]>({
     queryKey: ["products"],
     queryFn: getAllProducts,
   });
+
 
   const handleSubmit = (values: FormValues) => {
     onSubmit(values);
@@ -138,7 +139,7 @@ const CreateInventoriesPage = ({
                             key={item.id}
                             value={item.id ? item.id?.toString() : ""}
                           >
-                            {item.name}
+                            {item.id}
                           </SelectItem>
                         ))}
                     </>

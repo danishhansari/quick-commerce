@@ -40,7 +40,7 @@ const InventoriesSheet = () => {
           <h1 className="scroll-m-20 text-xl font-bold tracking-tight lg:text-2xl">
             Create Delivery Person
           </h1>
-          <SheetDescription>Create a new delivery person</SheetDescription>
+          <SheetDescription>Create a new Inventory</SheetDescription>
         </SheetHeader>
         <CreateInventoriesPage onSubmit={onSubmit} disabled={isPending} />
       </SheetContent>
