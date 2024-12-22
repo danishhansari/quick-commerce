@@ -46,7 +46,7 @@ export async function GET(request: Request) {
       .select({
         id: inventories.id,
         sku: inventories.sku,
-        warehouses: warehouses.name,
+        warehouse: warehouses.name,
         product: products.name,
       })
       .from(inventories)

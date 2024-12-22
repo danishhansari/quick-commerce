@@ -21,8 +21,9 @@ export default function InventoryPage() {
     isLoading,
   } = useQuery<Inventories[]>({
     queryKey: ["inventories"],
-    queryFn: () => getAllInventories(),
+    queryFn: getAllInventories,
   });
+  console.log(inventories);
 
   const openMenu = () => {
     setIsOpen((prev) => !prev);
