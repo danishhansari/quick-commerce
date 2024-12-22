@@ -79,14 +79,14 @@ const CreateInventoriesPage = ({
           name="warehouse_id"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Warehouse ID</FormLabel>
+              <FormLabel>Warehouse</FormLabel>
               <Select
                 onValueChange={(value) => field.onChange(parseInt(value))}
                 defaultValue={field.value ? field.value.toString() : ""}
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select Warehouse ID" />
+                    <SelectValue placeholder="Select Warehouse" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -117,14 +117,14 @@ const CreateInventoriesPage = ({
           name="product_id"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Product ID</FormLabel>
+              <FormLabel>Product</FormLabel>
               <Select
                 onValueChange={(value) => field.onChange(parseInt(value))}
                 defaultValue={field.value ? field.value.toString() : ""}
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select Product ID" />
+                    <SelectValue placeholder="Select Product" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -138,7 +138,7 @@ const CreateInventoriesPage = ({
                             key={item.id}
                             value={item.id ? item.id?.toString() : ""}
                           >
-                            {item.id}
+                            {item.name}
                           </SelectItem>
                         ))}
                     </>
@@ -154,7 +154,7 @@ const CreateInventoriesPage = ({
           {disabled ? (
             <Loader2 className="animate-spin" />
           ) : (
-            "Create Invetories"
+            "Create Inventories"
           )}
         </Button>
       </form>

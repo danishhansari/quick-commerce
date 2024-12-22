@@ -38,7 +38,7 @@ const InventoriesSheet = () => {
       <SheetContent className="min-w-[20rem] space-y-2">
         <SheetHeader>
           <h1 className="scroll-m-20 text-xl font-bold tracking-tight lg:text-2xl">
-            Create Delivery Person
+            Create Inventory
           </h1>
           <SheetDescription>Create a new Inventory</SheetDescription>
         </SheetHeader>
