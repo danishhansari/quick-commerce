@@ -8,7 +8,7 @@ import {
   warehouses,
 } from "@/app/lib/db/schema";
 import { orderSchema } from "@/app/lib/validator/orderSchema";
-import getServerSession from "next-auth";
+import { getServerSession } from "next-auth";
 import { eq, and, isNull, inArray } from "drizzle-orm";
 
 export async function POST(request: Request) {
@@ -43,7 +43,7 @@ export async function POST(request: Request) {
   const foundProducts = await db
     .select()
     .from(products)
-    .where(eq(products.id, validatedData.productId))
+    .where(eq(products.id, validatedData.product_id))
     .limit(1);
 
   if (!foundProducts.length) {
@@ -53,15 +53,14 @@ export async function POST(request: Request) {
   let finalOrder: any = null;
 
   try {
-    finalOrder = await db.transaction(async (tx) => {
+    finalOrder = await db.transaction(async (tnx) => {
       // create order
-      const order = await tx
+      const order = await tnx
         .insert(orders)
-
         .values({
           ...validatedData,
           // @ts-ignore
-          userId: Number(session.token.id),
+          user_id: Number(session.token.id),
           price: foundProducts[0].price * validatedData.qty,
           // todo: move all statuses to enum or const
           status: "received",
@@ -70,13 +69,13 @@ export async function POST(request: Request) {
 
       // check stock
 
-      const availableStock = await tx
+      const availableStock = await tnx
         .select()
         .from(inventories)
         .where(
           and(
             eq(inventories.warehouse_id, warehouseResult[0].id),
-            eq(inventories.product_id, validatedData.productId),
+            eq(inventories.product_id, validatedData.product_id),
             isNull(inventories.order_id)
           )
         )
@@ -85,12 +84,12 @@ export async function POST(request: Request) {
 
       if (availableStock.length < validatedData.qty) {
         transactionError = `Stock is low, only ${availableStock.length} products available`;
-        tx.rollback();
+        tnx.rollback();
         return;
       }
 
       // check delivery person availibility
-      const availablePersons = await tx
+      const availablePersons = await tnx
         .select()
         .from(deliveryPerson)
         .where(
@@ -104,13 +103,13 @@ export async function POST(request: Request) {
 
       if (!availablePersons.length) {
         transactionError = `Delivery person is not available at the moment`;
-        tx.rollback();
+        tnx.rollback();
         return;
       }
 
       // stock is available and delivery person is available
       // update inventories table and add order_id
-      await tx
+      await tnx
         .update(inventories)
         .set({ order_id: order[0].id })
         .where(
@@ -121,13 +120,13 @@ export async function POST(request: Request) {
         );
 
       // update delivery person
-      await tx
+      await tnx
         .update(deliveryPerson)
         .set({ order_id: order[0].id })
         .where(eq(deliveryPerson.id, availablePersons[0].id));
 
       // update order
-      await tx
+      await tnx
         .update(orders)
         .set({ status: "reserved" })
         .where(eq(orders.id, order[0].id));
@@ -137,6 +136,7 @@ export async function POST(request: Request) {
   } catch (err) {
     // log
     // in production -> be careful don't return internal errors to the client.
+    console.log(err);
     return Response.json(
       {
         message: transactionError

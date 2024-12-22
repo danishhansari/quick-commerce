@@ -5,7 +5,7 @@ import { AuthOptions } from "next-auth";
 
 export const authOptions: AuthOptions = {
   pages: {
-    signIn: "/auth/signin"
+    signIn: "/auth/signin",
   },
   providers: [
     GoogleProvider({
@@ -44,7 +44,7 @@ export const authOptions: AuthOptions = {
     session(data: any) {
       return data;
     },
-    async redirect({baseUrl }) {
+    async redirect({ baseUrl }) {
       return baseUrl;
     },
     jwt({ token, user }: { token: any; user: any }) {
@@ -52,7 +52,6 @@ export const authOptions: AuthOptions = {
         token.role = user.role;
         token.id = user.id;
       }
-      console.log(token);
       return token;
     },
   },

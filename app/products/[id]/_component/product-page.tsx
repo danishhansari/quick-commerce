@@ -58,14 +58,14 @@ const ProductPage = () => {
       address: "",
       pincode: "",
       qty: 1,
-      productId: Number(productId),
+      product_id: Number(productId),
     },
   });
 
   const { mutate } = useMutation({
     mutationKey: ["order"],
     mutationFn: (data: FormValues) =>
-      placeOrder({ ...data, productId: Number(productId) }),
+      placeOrder({ ...data, product_id: Number(productId) }),
     onSuccess: (data) => {
       // window.location.href
       console.log(data);
@@ -216,7 +216,10 @@ const ProductPage = () => {
                     ${price} Buy Now
                   </Button>
                 ) : (
-                  <Link href={`/api/auth/signin?callbackUrl=${pathName}`} className="mt-8">
+                  <Link
+                    href={`/api/auth/signin?callbackUrl=${pathName}`}
+                    className="mt-8"
+                  >
                     <Button size="lg" className="group">
                       <ShoppingCart className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
                       ${price} Buy Now
