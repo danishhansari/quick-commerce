@@ -50,3 +50,9 @@ export const getAllWarehouses = async () => {
   console.log(response.data);
   return response.data;
 };
+
+export const placeOrder = async (data: any) => {
+  console.log("I got a call");
+  const response = await api.post(`/orders`, data);
+  return response.data;
+};

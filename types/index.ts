@@ -25,3 +25,10 @@ export interface DeliveryPerson {
   phone: string;
   warehouse: string;
 }
+
+export interface OrderData {
+  productId: number;
+  qty: number;
+  pincode: string;
+  address: string;
+}

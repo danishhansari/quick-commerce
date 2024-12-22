@@ -12,29 +12,25 @@ import getServerSession from "next-auth";
 import { eq, and, isNull, inArray } from "drizzle-orm";
 
 export async function POST(request: Request) {
+  // get session
   const session = await getServerSession(authOptions);
-  console.log(session);
 
   if (!session) {
-    return Response.json(
-      { message: "Not allowed to place order" },
-      { status: 400 }
-    );
+    return Response.json({ message: "Not allowed" }, { status: 401 });
   }
 
+  // validate request body
   const requestData = await request.json();
-
-  // validate zod
-
   let validatedData;
 
   try {
-    validatedData = orderSchema.parse(requestData);
-  } catch (error) {
-    return Response.json({ message: error }, { status: 400 });
+    validatedData = await orderSchema.parse(requestData);
+  } catch (err) {
+    return Response.json({ message: err }, { status: 400 });
   }
 
-  // order creation
+  // Order creation.
+
   const warehouseResult = await db
     .select({ id: warehouses.id })
     .from(warehouses)
@@ -53,24 +49,28 @@ export async function POST(request: Request) {
   if (!foundProducts.length) {
     return Response.json({ message: "No product found" }, { status: 400 });
   }
-
-  let transactionErr: string = "";
+  let transactionError: string = "";
   let finalOrder: any = null;
+
   try {
-    finalOrder = await db.transaction(async (tnx) => {
-      // Placing an order
-      const order = await tnx
+    finalOrder = await db.transaction(async (tx) => {
+      // create order
+      const order = await tx
         .insert(orders)
-        // @ts-ignore
+
         .values({
           ...validatedData,
-          user_id: session.token.id,
+          // @ts-ignore
+          userId: Number(session.token.id),
           price: foundProducts[0].price * validatedData.qty,
+          // todo: move all statuses to enum or const
           status: "received",
         })
         .returning({ id: orders.id, price: orders.price });
 
-      const availableStock = await tnx
+      // check stock
+
+      const availableStock = await tx
         .select()
         .from(inventories)
         .where(
@@ -84,14 +84,13 @@ export async function POST(request: Request) {
         .for("update", { skipLocked: true });
 
       if (availableStock.length < validatedData.qty) {
-        transactionErr = `Stock is low, only ${availableStock.length} products available`;
-        tnx.rollback();
+        transactionError = `Stock is low, only ${availableStock.length} products available`;
+        tx.rollback();
         return;
       }
 
-      // check delivery person available
-
-      const availablePerson = await tnx
+      // check delivery person availibility
+      const availablePersons = await tx
         .select()
         .from(deliveryPerson)
         .where(
@@ -103,16 +102,15 @@ export async function POST(request: Request) {
         .for("update")
         .limit(1);
 
-      if (!availablePerson) {
-        transactionErr = `Delivery person is not available at this moment`;
-        tnx.rollback();
+      if (!availablePersons.length) {
+        transactionError = `Delivery person is not available at the moment`;
+        tx.rollback();
         return;
       }
 
-      // stock is available and delivery person is availale
-      // update inventories table and order_id
-
-      await tnx
+      // stock is available and delivery person is available
+      // update inventories table and add order_id
+      await tx
         .update(inventories)
         .set({ order_id: order[0].id })
         .where(
@@ -123,27 +121,33 @@ export async function POST(request: Request) {
         );
 
       // update delivery person
-
-      await tnx
+      await tx
         .update(deliveryPerson)
         .set({ order_id: order[0].id })
-        .where(eq(deliveryPerson.id, availablePerson[0].id));
+        .where(eq(deliveryPerson.id, availablePersons[0].id));
 
-      await tnx
+      // update order
+      await tx
         .update(orders)
         .set({ status: "reserved" })
         .where(eq(orders.id, order[0].id));
 
       return order[0];
     });
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    // log
+    // in production -> be careful don't return internal errors to the client.
     return Response.json(
       {
-        message: transactionErr ? transactionErr : "Error while db transaction",
+        message: transactionError
+          ? transactionError
+          : "Error while db transaction",
       },
       { status: 500 }
     );
   }
-  
+
+  return Response.json({ message: "It is worked" });
+  // create invoice
+  // const paymentUrl =
 }

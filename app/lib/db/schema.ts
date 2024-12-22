@@ -93,7 +93,7 @@ export const inventories = pgTable("inventories", {
   product_id: integer("product_id").references(() => products.id, {
     onDelete: "cascade",
   }),
-  sku: varchar({ length: 8 }).notNull(),
+  sku: varchar({ length: 8 }).unique().notNull(),
   updated_at: timestamp().defaultNow(),
   created_at: timestamp().defaultNow(),
 });

@@ -1,9 +1,17 @@
+import { authOptions } from "@/app/lib/auth/authOptions";
 import { db } from "@/app/lib/db";
 import { inventories, products, warehouses } from "@/app/lib/db/schema";
 import { inventoriesSchema } from "@/app/lib/validator/inventoriesSchema";
 import { desc, eq } from "drizzle-orm";
+import { getServerSession } from "next-auth";
 
 export async function POST(request: Request) {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return Response.json({ message: "Not allowed" }, { status: 401 });
+  }
+
   const requestData = await request.json();
   console.log(requestData);
   let validatedData;

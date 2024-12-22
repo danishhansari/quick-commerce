@@ -1,10 +1,10 @@
 "use client";
 
-import { getProductById } from "@/app/http/api";
+import { getProductById, placeOrder } from "@/app/http/api";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Product } from "@/types";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useParams, usePathname } from "next/navigation";
 import { AlertCircle, ShoppingCart } from "lucide-react";
@@ -27,10 +27,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { useMemo } from "react";
+import { AxiosError } from "axios";
+import { useToast } from "@/hooks/use-toast";
 
 export type FormValues = z.input<typeof orderSchema>;
 
+type CustomError = {
+  message: string;
+};
+
 const ProductPage = () => {
+  const { toast } = useToast();
   const params = useParams();
   const pathName = usePathname();
   const productId = params?.id as string;
@@ -55,7 +62,34 @@ const ProductPage = () => {
     },
   });
 
-  const onSubmit = (values: FormValues) => {};
+  const { mutate } = useMutation({
+    mutationKey: ["order"],
+    mutationFn: (data: FormValues) =>
+      placeOrder({ ...data, productId: Number(productId) }),
+    onSuccess: (data) => {
+      // window.location.href
+      console.log(data);
+    },
+    onError: (err: AxiosError) => {
+      if (err.response?.data) {
+        const customErr = err.response.data as CustomError;
+        console.error(customErr.message);
+        toast({
+          title: customErr.message,
+          color: "red",
+        });
+      } else {
+        console.error(err);
+        toast({
+          title: "Unknown error",
+        });
+      }
+    },
+  });
+
+  const onSubmit = (values: FormValues) => {
+    mutate(values);
+  };
 
   const qty = form.watch("qty");
 
@@ -92,7 +126,7 @@ const ProductPage = () => {
         <div className="grid gap-4 md:gap-8 md:grid-cols-2">
           <Card className="border-none">
             <CardContent>
-              <div className="relative aspect-square  w-full overflow-hidden rounded-xl">
+              <div className="relative aspect-square w-full overflow-hidden rounded-xl">
                 <Image
                   src={product.image}
                   alt={product.name}
@@ -137,6 +171,7 @@ const ProductPage = () => {
                     </FormItem>
                   )}
                 />
+
                 <div className="flex flex-col md:flex-row gap-4 mt-4">
                   <FormField
                     control={form.control}
@@ -174,27 +209,26 @@ const ProductPage = () => {
                     )}
                   />
                 </div>
+
+                {session ? (
+                  <Button size="lg" className="group w-full mt-8" type="submit">
+                    <ShoppingCart className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                    ${price} Buy Now
+                  </Button>
+                ) : (
+                  <Link href={`/api/auth/signin?callbackUrl=${pathName}`} className="mt-8">
+                    <Button size="lg" className="group">
+                      <ShoppingCart className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                      ${price} Buy Now
+                    </Button>
+                  </Link>
+                )}
               </form>
             </Form>
-
-            {session ? (
-              <Button size="lg" className="group w-full">
-                <ShoppingCart className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
-                ${price} Buy Now
-              </Button>
-            ) : (
-              <Link href={`/api/auth/signin?callbackUrl=${pathName}`}>
-                <Button size="lg" className="group">
-                  <ShoppingCart className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
-                  ${price} Buy Now
-                </Button>
-              </Link>
-            )}
           </div>
         </div>
       ) : null}
     </div>
   );
 };
-
 export default ProductPage;
