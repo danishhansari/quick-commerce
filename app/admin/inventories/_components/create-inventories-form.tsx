@@ -53,7 +53,6 @@ const CreateInventoriesPage = ({
     queryFn: getAllProducts,
   });
 
-
   const handleSubmit = (values: FormValues) => {
     onSubmit(values);
   };
@@ -115,7 +114,7 @@ const CreateInventoriesPage = ({
 
         <FormField
           control={form.control}
-          name="order_id"
+          name="product_id"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Product ID</FormLabel>

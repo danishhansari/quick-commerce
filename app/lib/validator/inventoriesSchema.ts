@@ -7,7 +7,7 @@ export const inventoriesSchema = z.object({
   warehouse_id: z
     .number({ message: "Warehouse id should be number" })
     .positive({ message: "Warehouse id should be a postive number" }),
-  order_id: z
+  product_id: z
     .number({ message: "Order id should be number" })
     .positive({ message: "Order id should be a postive number" }),
 });
