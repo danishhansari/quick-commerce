@@ -66,13 +66,36 @@ const ProductPage = () => {
     mutationKey: ["order"],
     mutationFn: (data: FormValues) =>
       placeOrder({ ...data, product_id: Number(productId) }),
-    onSuccess: ({ order: data }) => {
+    onSuccess: ({ order: data, product }) => {
       const options = {
         key: process.env.RAZORPAY_KEY!,
         currency: data.currency,
         amount: data.amount,
         order_id: data.id,
+        handler: async (response: any) => {
+          console.log("I verifying payment", response);
+          const paymentResponse = await fetch("/api/verify-payment", {
+            method: "POST",
+            body: JSON.stringify({
+              razorpayPaymentId: response.razorpay_payment_id,
+              razorpayOrderId: response.razorpay_order_id,
+              razorpaySignature: response.razorpay_signature,
+              id: product.id,
+            }),
+          });
+
+          const res = await paymentResponse.json();
+          if (res?.error === false) {
+            toast({
+              title: "Payment failed",
+            });
+          }
+        },
+        prefill: {
+          email: "dan72mail@gmail.com",
+        },
       };
+
       const paymentObject = new window.Razorpay(options);
       paymentObject.open();
       console.log("I am payment Object", paymentObject);

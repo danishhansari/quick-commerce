@@ -154,5 +154,5 @@ export async function POST(request: Request) {
     receipt: crypto.randomUUID(),
   };
   const order = await razorPayInstance.orders.create(options);
-  return Response.json({ message: "It is worked", order });
+  return Response.json({ product: finalOrder, order });
 }
