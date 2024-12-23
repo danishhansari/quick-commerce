@@ -66,9 +66,20 @@ const ProductPage = () => {
     mutationKey: ["order"],
     mutationFn: (data: FormValues) =>
       placeOrder({ ...data, product_id: Number(productId) }),
-    onSuccess: (data) => {
-      // window.location.href
-      console.log(data);
+    onSuccess: ({ order: data }) => {
+      const options = {
+        key: process.env.RAZORPAY_KEY!,
+        currency: data.currency,
+        amount: data.amount,
+        order_id: data.id,
+      };
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.open();
+      console.log("I am payment Object", paymentObject);
+
+      paymentObject.on("payment.failed", function (response) {
+        alert("Payment failed. Please try again.");
+      });
     },
     onError: (err: AxiosError) => {
       if (err.response?.data) {

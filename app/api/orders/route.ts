@@ -10,6 +10,8 @@ import {
 import { orderSchema } from "@/app/lib/validator/orderSchema";
 import { getServerSession } from "next-auth";
 import { eq, and, isNull, inArray } from "drizzle-orm";
+import crypto from "crypto";
+import { razorPayInstance } from "@/app/lib/constant/razorpayInstance";
 
 export async function POST(request: Request) {
   // get session
@@ -128,7 +130,7 @@ export async function POST(request: Request) {
       // update order
       await tnx
         .update(orders)
-        .set({ status: "reserved" })
+        .set({ status: "COD" })
         .where(eq(orders.id, order[0].id));
 
       return order[0];
@@ -146,8 +148,11 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
-
-  return Response.json({ message: "It is worked" });
-  // create invoice
-  // const paymentUrl =
+  const options = {
+    amount: finalOrder.price * 100,
+    currency: "INR",
+    receipt: crypto.randomUUID(),
+  };
+  const order = await razorPayInstance.orders.create(options);
+  return Response.json({ message: "It is worked", order });
 }
