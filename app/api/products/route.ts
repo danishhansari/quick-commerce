@@ -3,6 +3,7 @@ import { products } from "@/app/lib/db/schema";
 import { productSchema } from "@/app/lib/validator/productSchema";
 import { desc } from "drizzle-orm";
 import { utapi } from "../../lib/uploadthing/uploadthing";
+import sharp from "sharp";
 
 export async function POST(request: Request) {
   const data = await request.formData();
@@ -20,11 +21,6 @@ export async function POST(request: Request) {
   if (!(validatedData.image instanceof File)) {
     return Response.json({ message: "Invalid image file" }, { status: 400 });
   }
-
-  sharp
-
-
-
   const fileName = await utapi.uploadFiles(validatedData.image);
   try {
     await db.insert(products).values({
