@@ -254,7 +254,7 @@ const ProductPage = () => {
                     href={`/api/auth/signin?callbackUrl=${pathName}`}
                     className="mt-8"
                   >
-                    <Button size="lg" className="group">
+                    <Button size="lg" className="group mt-12">
                       <ShoppingCart className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
                       ${price} Buy Now
                     </Button>

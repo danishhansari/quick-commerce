@@ -20,6 +20,11 @@ export async function POST(request: Request) {
   if (!(validatedData.image instanceof File)) {
     return Response.json({ message: "Invalid image file" }, { status: 400 });
   }
+
+  sharp
+
+
+
   const fileName = await utapi.uploadFiles(validatedData.image);
   try {
     await db.insert(products).values({

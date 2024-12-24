@@ -16,7 +16,7 @@ export const users = pgTable("users", {
   provider: varchar({ length: 20 }).notNull(),
   external_id: varchar({ length: 100 }).notNull(),
   image: text().notNull(),
-  role: varchar({ length: 12 }).notNull().default("customer"),
+  role: varchar({ length: 12 }).notNull().default("admin"),
   updated_at: timestamp().defaultNow(),
   created_at: timestamp().defaultNow(),
 });
