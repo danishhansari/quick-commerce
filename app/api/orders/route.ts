@@ -5,6 +5,7 @@ import {
   inventories,
   orders,
   products,
+  users,
   warehouses,
 } from "@/app/lib/db/schema";
 import { orderSchema } from "@/app/lib/validator/orderSchema";
@@ -155,4 +156,34 @@ export async function POST(request: Request) {
   };
   const order = await razorPayInstance.orders.create(options);
   return Response.json({ product: finalOrder, order });
+}
+
+export async function GET(request: Request) {
+  const token = await getServerSession(authOptions);
+
+  if (!token) {
+    return Response.json(
+      { message: "You are not authenticated" },
+      { status: 403 }
+    );
+  }
+
+  const allOrders = await db
+    .select({
+      id: orders.id,
+      product: products.name,
+      productId: products.id,
+      userId: users.id,
+      user: users.fname,
+      price: orders.price,
+      image: products.image,
+      status: orders.status,
+      address: orders.address,
+      createdAt: orders.created_at,
+    })
+    .from(orders)
+    .leftJoin(products, eq(orders.product_id, products.id))
+    .leftJoin(users, eq(orders.user_id, Number(token.token.id)));
+
+  return Response.json(allOrders, { status: 200 });
 }
