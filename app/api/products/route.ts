@@ -3,6 +3,7 @@ import { products } from "@/app/lib/db/schema";
 import { productSchema } from "@/app/lib/validator/productSchema";
 import { desc } from "drizzle-orm";
 import { utapi } from "../../lib/uploadthing/uploadthing";
+import sharp from "sharp";
 
 export async function POST(request: Request) {
   const data = await request.formData();
@@ -20,7 +21,20 @@ export async function POST(request: Request) {
   if (!(validatedData.image instanceof File)) {
     return Response.json({ message: "Invalid image file" }, { status: 400 });
   }
-  const fileName = await utapi.uploadFiles(validatedData.image);
+
+  const imageBuffer = Buffer.from(await validatedData.image.arrayBuffer());
+
+  const processedImageBuffer = await sharp(imageBuffer)
+    .resize()
+    .toFormat("webp")
+    .toBuffer();
+
+  const fileName = await utapi.uploadFiles(
+    new File([processedImageBuffer], "image.webp", { type: "image/webp" })
+  );
+
+  console.log(fileName);
+
   try {
     await db.insert(products).values({
       name: validatedData.name,
