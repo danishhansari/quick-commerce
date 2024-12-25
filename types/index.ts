@@ -40,3 +40,14 @@ export interface VerifyPayment {
   razorpaySignature: string;
   id: number;
 }
+
+export interface Orders {
+  id: number;
+  product: string;
+  user: string;
+  status: string;
+  deliveryPersonNumber: string;
+  deliveryPersonName: string;
+  qty: number;
+  createdAt: Date;
+}

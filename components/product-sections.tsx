@@ -13,7 +13,7 @@ const ProductSection = () => {
   });
 
   return (
-    <div className="max-w-6xl px-4 md:px-8 mx-auto py-12">
+    <div className="max-w-6xl px-4 md:px-8 mx-auto pb-12">
       <h2 className="scroll-m-20 text-center my-2 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
         Products
       </h2>
@@ -26,7 +26,7 @@ const ProductSection = () => {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
         {products?.length &&
-          products.slice(0, 6).map((item) => {
+          products.slice(0, 5).map((item) => {
             return <ProductCard product={item} />;
           })}
       </div>
