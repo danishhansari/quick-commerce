@@ -10,6 +10,7 @@ import { Menu } from "lucide-react";
 import { MountainIcon } from "@/components/mountain-icon";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import Signout from "@/app/admin/_components/signout";
 
 const Navbar = () => {
   const { data } = useSession();
@@ -39,7 +40,7 @@ const Navbar = () => {
 
           {data?.token.role === "customer" && (
             <Link
-              href={"/my-orders"}
+              href={"/accounts/my-orders"}
               className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
             >
               My Order
@@ -56,12 +57,11 @@ const Navbar = () => {
                     Login
                   </Link>
                 )}
-
                 {data?.token.role === "admin" && (
-                  <Button variant="secondary" className="rounded-lg">
-                    <Link href={"/admin"}>Admin</Link>
-                  </Button>
+                  <Link href={"/admin"}>Admin</Link>
                 )}
+
+                {data?.token.role === "customer" && <Signout>Sign out</Signout>}
               </Button>
             </DropdownMenuTrigger>
           </DropdownMenu>
