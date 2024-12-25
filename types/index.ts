@@ -4,6 +4,7 @@ export interface Product {
   image: string;
   price: number;
   description: string;
+  created_at?: Date;
 }
 
 export interface Inventories {
