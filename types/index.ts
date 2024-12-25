@@ -27,8 +27,15 @@ export interface DeliveryPerson {
 }
 
 export interface OrderData {
-  productId: number;
+  product_id: number;
   qty: number;
   pincode: string;
   address: string;
+}
+
+export interface VerifyPayment {
+  razorpayPaymentId: string;
+  razorpayOrderId: string;
+  razorpaySignature: string;
+  id: number;
 }
