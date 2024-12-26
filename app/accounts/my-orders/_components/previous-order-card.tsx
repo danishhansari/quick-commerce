@@ -2,16 +2,20 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { MyOrder } from "@/types";
 import { formatDistanceToNow } from "date-fns";
 import { Package } from "lucide-react";
 import React from "react";
 
-const PreviousOrderCard = ({ order }: any) => {
+interface myOrder {
+  order: MyOrder;
+}
+const PreviousOrderCard = ({order}: myOrder) => {
   return (
     <Card className="w-full">
       <CardContent className="p-3 sm:p-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
-          <Avatar className="h-12 w-12 sm:h-14 sm:w-14">
+          <Avatar className="h-12 w-12 sm:h-14 sm:w-14 flex flex-col">
             <AvatarImage src={order.productImage} alt={order.product} />
             <AvatarFallback className="bg-primary">
               <Package className="h-5 w-5 sm:h-6 sm:w-6 text-primary-foreground" />

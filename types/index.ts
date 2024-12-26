@@ -51,3 +51,14 @@ export interface Orders {
   qty: number;
   createdAt: Date;
 }
+
+export interface MyOrder {
+  id: number;
+  qty: number;
+  status: string;
+  price: number;
+  product: string;
+  productImage: string;
+  description: string;
+  createdAt: Date;
+}
