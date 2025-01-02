@@ -1,13 +1,13 @@
 "use client";
 
-import { getProductById, placeOrder } from "@/app/http/api";
+import { getProductById, placeOrder, verifyPayment } from "@/app/http/api";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Product } from "@/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useParams, usePathname } from "next/navigation";
-import { AlertCircle, ShoppingCart } from "lucide-react";
+import { AlertCircle, Loader2, ShoppingCart } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
@@ -62,7 +62,7 @@ const ProductPage = () => {
     },
   });
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationKey: ["order"],
     mutationFn: (data: FormValues) =>
       placeOrder({ ...data, product_id: Number(productId) }),
@@ -73,35 +73,30 @@ const ProductPage = () => {
         amount: data.amount,
         order_id: data.id,
         handler: async (response: any) => {
-          console.log("I verifying payment", response);
-          const paymentResponse = await fetch("/api/verify-payment", {
-            method: "POST",
-            body: JSON.stringify({
-              razorpayPaymentId: response.razorpay_payment_id,
-              razorpayOrderId: response.razorpay_order_id,
-              razorpaySignature: response.razorpay_signature,
-              id: product.id,
-            }),
-          });
+          const verifyPaymentPayload = {
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpayOrderId: response.razorpay_order_id,
+            razorpaySignature: response.razorpay_signature,
+            id: product.id,
+          };
 
-          const res = await paymentResponse.json();
-          if (res?.error === false) {
+          const res = await verifyPayment(verifyPaymentPayload);
+
+          if (!res.error) {
             toast({
-              title: "Payment failed",
+              title: "Payment Succeed",
             });
           }
-        },
-        prefill: {
-          email: "dan72mail@gmail.com",
         },
       };
 
       const paymentObject = new window.Razorpay(options);
       paymentObject.open();
-      console.log("I am payment Object", paymentObject);
 
-      paymentObject.on("payment.failed", function (response) {
-        alert("Payment failed. Please try again.");
+      paymentObject.on("payment.failed", function (response: any) {
+        toast({
+          title: "Payment failed. Please try again.",
+        });
       });
     },
     onError: (err: AxiosError) => {
@@ -245,8 +240,17 @@ const ProductPage = () => {
                 </div>
 
                 {session ? (
-                  <Button size="lg" className="group w-full mt-8" type="submit">
-                    <ShoppingCart className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                  <Button
+                    size="lg"
+                    className="group w-full mt-8"
+                    type="submit"
+                    disabled={isPending}
+                  >
+                    {isPending ? (
+                      <Loader2 className="animate-spin" />
+                    ) : (
+                      <ShoppingCart className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                    )}
                     ${price} Buy Now
                   </Button>
                 ) : (

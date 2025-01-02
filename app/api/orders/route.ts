@@ -172,18 +172,18 @@ export async function GET(request: Request) {
     .select({
       id: orders.id,
       product: products.name,
-      productId: products.id,
-      userId: users.id,
       user: users.fname,
-      price: orders.price,
-      image: products.image,
       status: orders.status,
-      address: orders.address,
+      deliveryPersonNumber: deliveryPerson.phone,
+      deliveryPersonName: deliveryPerson.name,
+      qty: orders.qty,
       createdAt: orders.created_at,
     })
     .from(orders)
     .leftJoin(products, eq(orders.product_id, products.id))
-    .leftJoin(users, eq(orders.user_id, Number(token.token.id)));
+    .leftJoin(users, eq(orders.user_id, users.id))
+    .leftJoin(deliveryPerson, eq(orders.id, deliveryPerson.order_id));
 
+  console.log(allOrders);
   return Response.json(allOrders, { status: 200 });
 }

@@ -1,4 +1,11 @@
-import { DeliveryPerson, Inventories, Product, Warehouses } from "@/types";
+import {
+  DeliveryPerson,
+  Inventories,
+  OrderData,
+  Product,
+  VerifyPayment,
+  Warehouses,
+} from "@/types";
 import { api } from "./client";
 
 export const createProduct = async (data: Product) => {
@@ -51,8 +58,22 @@ export const getAllWarehouses = async () => {
   return response.data;
 };
 
-export const placeOrder = async (data: any) => {
-  console.log("I got a call");
+export const placeOrder = async (data: OrderData) => {
   const response = await api.post(`/orders`, data);
+  return response.data;
+};
+
+export const verifyPayment = async (data: VerifyPayment) => {
+  const response = await api.post(`/verify-payment`, data);
+  return response.data;
+};
+
+export const getAllOrders = async () => {
+  const response = await api.get(`/orders`);
+  return response.data;
+};
+
+export const getAllMyOrders = async () => {
+  const response = await api.get(`/my-orders`);
   return response.data;
 };

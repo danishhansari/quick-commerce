@@ -10,14 +10,14 @@ import { Menu } from "lucide-react";
 import { MountainIcon } from "@/components/mountain-icon";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import Signout from "@/app/admin/_components/signout";
 
 const Navbar = () => {
   const { data } = useSession();
   const pathName = usePathname();
   const links = [
     { href: "#", text: "Home" },
-    { href: "/about", text: "About" },
-    { href: "/services", text: "Services" },
+    { href: "/products", text: "Products" },
   ];
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white dark:border-gray-800 dark:bg-gray-950">
@@ -37,19 +37,31 @@ const Navbar = () => {
               {link.text}
             </Link>
           ))}
+
+          {data?.token.role === "customer" && (
+            <Link
+              href={"/accounts/my-orders"}
+              className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+            >
+              My Order
+            </Link>
+          )}
         </nav>
 
         <div className="flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" className="rounded-lg">
-                {data ? (
-                  <Link href={"/admin"}>Admin</Link>
-                ) : (
-                  <Link href={`/api/auth/signin?callbackUrl=${pathName}/admin`}>
-                    Admin
+                {!data && (
+                  <Link href={`/api/auth/signin?callbackUrl=${pathName}`}>
+                    Login
                   </Link>
                 )}
+                {data?.token.role === "admin" && (
+                  <Link href={"/admin"}>Admin</Link>
+                )}
+
+                {data?.token.role === "customer" && <Signout>Sign out</Signout>}
               </Button>
             </DropdownMenuTrigger>
           </DropdownMenu>
@@ -64,7 +76,7 @@ const Navbar = () => {
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="md:hidden">
+            <SheetContent side="right" className="md:hidden">
               <div className="grid gap-4 p-4 mt-16">
                 {links.map((link, index) => (
                   <Link

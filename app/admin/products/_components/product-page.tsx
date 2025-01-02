@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { getAllProducts } from "@/app/http/api";
 import { Button } from "@/components/ui/button";
@@ -20,7 +20,7 @@ export default function ProductsPage() {
     isLoading,
   } = useQuery<Product[]>({
     queryKey: ["products"],
-    queryFn: () => getAllProducts(),
+    queryFn: getAllProducts,
   });
 
   const openMenu = () => {

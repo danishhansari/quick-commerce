@@ -1,16 +1,17 @@
 import crypto from "crypto";
+import { validatePaymentVerification } from "razorpay/dist/utils/razorpay-utils";
 
 export async function POST(req: Request) {
   const { razorpayOrderId, razorpaySignature, razorpayPaymentId, id } =
     await req.json();
-  const body = razorpayOrderId + "|" + razorpayPaymentId;
 
-  const expectedSignature = crypto
-    .createHmac("sha256", process.env.RAZORPAY_KEY!)
-    .update(body.toString())
-    .digest("hex");
+  const isAuthentic = validatePaymentVerification(
+    { order_id: razorpayOrderId, payment_id: razorpayPaymentId },
+    razorpaySignature,
+    process.env.RAZORPAY_SECRET!
+  );
 
-  const isAuthentic = expectedSignature === razorpaySignature;
+  console.log("Verification", isAuthentic);
 
   if (!isAuthentic) {
     return Response.json(
