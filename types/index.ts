@@ -62,3 +62,6 @@ export interface MyOrder {
   description: string;
   createdAt: Date;
 }
+export interface CheckingCICD {
+  status: string;
+}
